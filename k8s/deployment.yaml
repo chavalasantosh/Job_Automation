@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nowcurry-worker
+  labels:
+    app: nowcurry
+    component: worker
+spec:
+  replicas: 10 # Industrial Scale
+  selector:
+    matchLabels:
+      app: nowcurry
+      component: worker
+  template:
+    metadata:
+      labels:
+        app: nowcurry
+        component: worker
+    spec:
+      containers:
+      - name: worker
+        image: nowcurry-worker:latest
+        imagePullPolicy: Never # Using local build for dev
+        env:
+        - name: DATABASE_URL
+          value: "postgresql://nowcurry:nowcurry@db-service:5432/nowcurry"
+        - name: REDIS_URL
+          value: "redis://redis-service:6379/0"
+        - name: WORKER_ID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        resources:
+          limits:
+            cpu: "1"
+            memory: "2Gi"
+          requests:
+            cpu: "0.5"
+            memory: "1Gi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nowcurry-worker-headless
+spec:
+  clusterIP: None
+  selector:
+    app: nowcurry
+    component: worker
+  ports:
+  - port: 80
+    name: dummy

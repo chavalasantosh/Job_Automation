@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+celery
+redis
+sqlalchemy
+psycopg2-binary
+playwright
+playwright-stealth
+curl-cffi
+pydantic
+python-dotenv
+requests
+pypdf
+tenacity
+tailer
+google-generativeai

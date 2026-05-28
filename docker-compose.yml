@@ -1,0 +1,85 @@
+version: '3.8'
+
+services:
+  # ---------------------------------------------------------
+  # CONTROL PLANE (The Brain)
+  # ---------------------------------------------------------
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker # We reuse the core image for consistency
+    command: uvicorn server:app --host 0.0.0.0 --port 8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://nowcurry:nowcurry@db:5432/nowcurry
+      - REDIS_URL=redis://redis:6379/0
+      - PYTHONPATH=/app
+    volumes:
+      - .:/app
+      - mission_data:/app/missions
+    depends_on:
+      - db
+      - redis
+
+  # ---------------------------------------------------------
+  # DATA PLANE (The Hive Workers)
+  # ---------------------------------------------------------
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    command: celery -A NowCurry.tasks worker --loglevel=info --concurrency=1
+    environment:
+      - DATABASE_URL=postgresql://nowcurry:nowcurry@db:5432/nowcurry
+      - REDIS_URL=redis://redis:6379/0
+      - RELAY_URL=http://api:8000
+      - PYTHONPATH=/app
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    volumes:
+      - .:/app
+      - mission_data:/app/missions
+    depends_on:
+      - db
+      - redis
+
+  # ---------------------------------------------------------
+  # NERVOUS SYSTEM (The Message Bus)
+  # ---------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  # ---------------------------------------------------------
+  # GLOBAL STATE (Persistence)
+  # ---------------------------------------------------------
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=nowcurry
+      - POSTGRES_PASSWORD=nowcurry
+      - POSTGRES_DB=nowcurry
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # ---------------------------------------------------------
+  # COMMAND CENTER (The Dashboard)
+  # ---------------------------------------------------------
+  dashboard:
+    build:
+      context: ./dashboard
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8000/api
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:
+  mission_data:

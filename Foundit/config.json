@@ -1,0 +1,34 @@
+{
+    "credentials": {
+        "username": "santuchavala@gmail.com",
+        "password": "YOUR_PORTAL_PASSWORD"
+    },
+    "preferences": {
+        "job_titles": [
+            "Generative AI Engineer",
+            "LLM Engineer",
+            "NLP Engineer",
+            "Machine Learning Engineer",
+            "AI Developer"
+        ],
+        "location": "Bangalore",
+        "headlines": [
+            "Generative AI Engineer | LLMs, RAG Pipelines, LangChain | Foundit Profile",
+            "LLM & NLP Specialist | Transformers, BERT | AI Automation",
+            "Machine Learning Engineer | Production ML Systems | Python, FAISS",
+            "AI Solution Architect | Agentic AI | CrewAI, AutoGen",
+            "Applied AI Scientist | Deep Learning | PyTorch, OpenAI"
+        ]
+    },
+    "application": {
+        "max_applications_per_run": 10,
+        "rate_limit_delay_seconds": 30,
+        "resume_path": "SANTOSH CHAVALA.pdf",
+        "blacklist_companies": []
+    },
+    "settings": {
+        "dry_run": false,
+        "headless": true,
+        "browser": "brave"
+    }
+}

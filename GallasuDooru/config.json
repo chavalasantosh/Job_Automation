@@ -1,0 +1,31 @@
+{
+    "credentials": {
+        "username": "santuchavala@gmail.com",
+        "password": "YOUR_PORTAL_PASSWORD"
+    },
+    "preferences": {
+        "job_titles": [
+            "Generative AI Engineer",
+            "LLM Engineer",
+            "Python AI Developer",
+            "Senior Machine Learning Engineer"
+        ],
+        "location": "Bangalore",
+        "headlines": [
+            "Generative AI Specialist | LLMs, RAG | Glassdoor Verified",
+            "LLM Engineer | NLP & Deep Learning | 5+ Years Experience",
+            "Senior AI/ML Developer | Python, PyTorch, FAISS",
+            "Applied AI Scientist | Agentic Systems Architect",
+            "GenAI & NLP Engineer | Open Source LLM Expertise"
+        ]
+    },
+    "application": {
+        "max_applications_per_run": 8,
+        "rate_limit_delay_seconds": 60,
+        "resume_path": "SANTOSH CHAVALA.pdf"
+    },
+    "settings": {
+        "dry_run": false,
+        "headless": true
+    }
+}

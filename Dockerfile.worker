@@ -1,0 +1,33 @@
+# NowCurry Infinity - Stateless Worker Node
+# "Google-Scale" Agentic Infrastructure
+
+FROM mcr.microsoft.com/playwright:v1.49.0-noble
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    python3-pip \
+    python3-venv \
+    xvfb \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set up Python environment
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Install requirements
+COPY requirements_worker.txt .
+RUN pip install --no-cache-dir -r requirements_worker.txt
+
+# Install Playwright browsers (Chromium for high performance)
+RUN playwright install chromium
+
+# Copy application core
+COPY . .
+
+# Explicitly set the PYTHONPATH to handle imports across distributed nodes
+ENV PYTHONPATH=/app
+
+# Worker nodes are stateless; they wait for missions from Redis/Celery
+CMD ["celery", "-A", "NowCurry.celery_app", "worker", "--loglevel=info", "--concurrency=1"]

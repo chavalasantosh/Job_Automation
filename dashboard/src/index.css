@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-background text-white font-inter;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+.glass-card {
+  @apply bg-card/50 backdrop-blur-xl border border-white/10 rounded-2xl;
+}
+
+.neon-border {
+  @apply border border-neon/30 shadow-[0_0_15px_rgba(0,242,255,0.1)];
+}
+
+.neon-text {
+  @apply text-neon drop-shadow-[0_0_8px_rgba(0,242,255,0.5)];
+}

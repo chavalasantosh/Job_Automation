@@ -1,0 +1,58 @@
+{
+  "credentials": {
+    "username": "santuchavala@gmail.com",
+    "password": "Chavalasy@2",
+    "use_cookies": true,
+    "cookies_file": "linkedin_cookies.json"
+  },
+  "preferences": {
+    "job_titles": [
+      "Generative AI Engineer",
+      "Gen AI Developer",
+      "LLM Engineer",
+      "Prompt Engineer",
+      "AI Application Developer",
+      "AI Solutions Engineer",
+      "AI Software Engineer",
+      "Python Developer (Generative AI)",
+      "Machine Learning Engineer",
+      "AI/ML Engineer",
+      "NLP Engineer",
+      "Data Scientist",
+      "AI Automation Engineer",
+      "AI Agent Developer",
+      "LLM Ops Engineer"
+    ],
+    "negative_keywords": [
+      "internship", "intern", "unpaid", "volunteer", "trainee", "fresher",
+      "0-1 years", "walk-in", "freelance", "part-time", "contract basis"
+    ],
+    "location": "Bangalore",
+    "experience_years": {
+      "min": 2,
+      "max": 10
+    },
+    "headlines": [
+      "Generative AI Engineer | LLM Specialist | Python & Frameworks Expert",
+      "AI/ML Engineer | GenAI Developer | Building Agentic Systems & RAG Pipelines",
+      "Software Engineer (AI/ML) | Prompt Engineering & LLM Optimization | Data Science",
+      "Applied AI Scientist | NLP & Deep Learning Expert | Generative AI Solutions"
+    ]
+  },
+  "application": {
+    "resume_path": "SANTOSH CHAVALA.pdf",
+    "rate_limit_delay_seconds": 5,
+    "max_applications_per_run": 25,
+    "skip_already_applied": true
+  },
+  "settings": {
+    "dry_run": false,
+    "log_level": "INFO",
+    "applied_jobs_file": "linkedin_applied_jobs.json",
+    "apply_window": {
+      "start_hour": 10,
+      "end_hour": 13,
+      "enabled": true
+    }
+  }
+}
