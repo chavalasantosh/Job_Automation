@@ -60,7 +60,7 @@ def get_stats():
     db = SessionLocal()
     try:
         total_apps = db.query(Application).count()
-        success_apps = db.query(Application).filter(Application.status == "SUCCESS").count()
+        success_apps = db.query(Application).filter(Application.status == "APPLIED").count()
         failed_apps = db.query(Application).filter(Application.status == "FAILED").count()
         return {
             "total_applications": total_apps,

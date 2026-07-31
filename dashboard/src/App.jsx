@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { 
   Activity, 
   Terminal, 
@@ -13,7 +13,7 @@ import {
   MonitorPlay,
   Cpu
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion as Motion } from 'framer-motion';
 import axios from 'axios';
 
 const API_BASE = "http://localhost:8000/api";
@@ -27,9 +27,23 @@ function App() {
   const [activeTab, setActiveTab] = useState('fleet');
   const logEndRef = useRef(null);
 
+  const fetchStatus = useCallback(async () => {
+    try {
+      const res = await axios.get(`${API_BASE}/fleet`);
+      setAgents(res.data);
+    } catch (e) { console.error("API error", e); }
+  }, []);
+
+  const fetchStats = useCallback(async () => {
+    try {
+      const res = await axios.get(`${API_BASE}/stats`);
+      setStats(res.data);
+    } catch (e) { console.error("Stats error", e); }
+  }, []);
+
   useEffect(() => {
-    fetchStatus();
-    fetchStats();
+    const initialStatusTimeout = setTimeout(fetchStatus, 0);
+    const initialStatsTimeout = setTimeout(fetchStats, 0);
     const statusInterval = setInterval(fetchStatus, 3000);
     const statsInterval = setInterval(fetchStats, 5000);
 
@@ -41,29 +55,17 @@ function App() {
     };
 
     return () => {
+      clearTimeout(initialStatusTimeout);
+      clearTimeout(initialStatsTimeout);
       clearInterval(statusInterval);
       clearInterval(statsInterval);
       ws.close();
     };
-  }, []);
+  }, [fetchStatus, fetchStats]);
 
   useEffect(() => {
     logEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [logs]);
-
-  const fetchStatus = async () => {
-    try {
-      const res = await axios.get(`${API_BASE}/fleet`);
-      setAgents(res.data);
-    } catch (e) { console.error("API error", e); }
-  };
-
-  const fetchStats = async () => {
-    try {
-      const res = await axios.get(`${API_BASE}/stats`);
-      setStats(res.data);
-    } catch (e) { console.error("Stats error", e); }
-  };
 
   return (
     <div className="min-h-screen bg-[#050507] text-[#e0e0e0] flex overflow-hidden">
@@ -106,7 +108,7 @@ function App() {
         </header>
 
         {activeTab === 'fleet' && (
-          <motion.div 
+          <Motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
@@ -120,7 +122,7 @@ function App() {
                 mission={agent.current_mission}
               />
             ))}
-          </motion.div>
+          </Motion.div>
         )}
 
         {activeTab === 'theater' && (
@@ -138,7 +140,7 @@ function App() {
         )}
 
         {activeTab === 'logs' && (
-          <motion.div 
+          <Motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="h-[70vh] bg-black/40 border border-white/5 rounded-2xl p-6 font-mono text-sm overflow-hidden flex flex-col shadow-inner"
@@ -157,7 +159,7 @@ function App() {
               ))}
               <div ref={logEndRef} />
             </div>
-          </motion.div>
+          </Motion.div>
         )}
       </main>
     </div>
@@ -173,7 +175,7 @@ function VisualMissionCard({ agent }) {
   }, []);
 
   return (
-    <motion.div 
+    <Motion.div 
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       className="bg-[#0f0f13] border border-white/10 rounded-3xl overflow-hidden shadow-2xl"
@@ -203,7 +205,7 @@ function VisualMissionCard({ agent }) {
           </div>
         </div>
       </div>
-    </motion.div>
+    </Motion.div>
   );
 }
 

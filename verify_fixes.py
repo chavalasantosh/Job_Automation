@@ -1,6 +1,10 @@
 import sys, os
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+APP_DIR = os.path.join(ROOT_DIR, "NowCurry")
+
+sys.path.insert(0, APP_DIR)
+sys.path.insert(0, ROOT_DIR)
 
 errors = []
 
